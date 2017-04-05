@@ -1,4 +1,4 @@
-import { CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js'
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js'
 import uuid from 'uuid'
 import poolData from '../cognito-pool-data'
 
@@ -18,4 +18,15 @@ export const createUser = (email, password, callback) => {
   const username = uuid()
 
   userPool.signUp(username, password, attributeList, null, callback)
+}
+
+
+export const verifyUser = (username, verifyCode, callback) => {
+  const userData = {
+    Username: username,
+    Pool: userPool,
+  }
+
+  const cognitoUser = new CognitoUser(userData)
+  cognitoUser.confirmRegistration(verifyCode, true, callback)
 }
