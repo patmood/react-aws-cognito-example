@@ -4,7 +4,6 @@ import { createUser, verifyUser } from './Cognito'
 class Signup extends Component {
   constructor (props) {
     super(props)
-    this.changeName = this.changeName.bind(this)
     this.changeEmail = this.changeEmail.bind(this)
     this.changePassword = this.changePassword.bind(this)
     this.changeVerifyCode = this.changeVerifyCode.bind(this)
@@ -17,10 +16,6 @@ class Signup extends Component {
       verifyCode: '',
       username: null,
     }
-  }
-
-  changeName (e) {
-    this.setState({ name: e.target.value })
   }
 
   changeEmail (e) {
@@ -62,7 +57,7 @@ class Signup extends Component {
   render () {
     return (
       <div className="Signup">
-        <h2>Signup</h2>
+        <h2>Sign Up</h2>
         {
           !this.state.username ? (
             <form onSubmit={this.handleSignupSubmit}>
