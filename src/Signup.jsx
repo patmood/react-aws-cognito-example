@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js'
-import uuid from 'uuid'
-import poolData from '../cognito-pool-data'
+import { createUser } from './Cognito'
 
 class Signup extends Component {
   constructor (props) {
@@ -10,8 +8,6 @@ class Signup extends Component {
     this.changeEmail = this.changeEmail.bind(this)
     this.changePassword = this.changePassword.bind(this)
     this.createUser = this.createUser.bind(this)
-
-    this.userPool = new CognitoUserPool(poolData)
 
     this.state = {
       email: '',
@@ -33,20 +29,8 @@ class Signup extends Component {
 
   createUser (e) {
     e.preventDefault()
-    console.log(this.state)
-    const attributeList = [
-      new CognitoUserAttribute({
-        Name: 'email',
-        Value: this.state.email,
-      }),
-    ]
-
-    // Username must be unique in a pool, and cant be a valid email format
-    // To log in with email, make sure it is set as an alias attribute in Cognito
-    // More info: http://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html#user-pool-settings-usernames
-    const username = uuid()
-
-    this.userPool.signUp(username, this.state.password, attributeList, null, (err, result) => {
+    console.log('Entered:', this.state)
+    createUser(this.state.email, this.state.password, (err, result) => {
       if (err) {
         console.log(err)
         return
