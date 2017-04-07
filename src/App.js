@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import Signup from './Signup'
 import Signin from './Signin'
+import UserStatus from './UserStatus'
 import './App.css';
 
 class App extends Component {
@@ -18,6 +19,7 @@ class App extends Component {
         <Signup />
         <hr />
         <Signin />
+        <UserStatus />
       </div>
     );
   }

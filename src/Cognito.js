@@ -56,3 +56,27 @@ export const authenticateUser = (email, password, callback) => {
     }
   })
 }
+
+export const signOut = () => {
+  userPool.getCurrentUser().signOut()
+  window.location.reload()
+}
+
+export const getCurrentUser = (callback) => {
+  const cognitoUser = userPool.getCurrentUser()
+  if (!cognitoUser) return false;
+
+  cognitoUser.getSession((err, session) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+
+    console.log('Session valid?', session.isValid())
+
+    cognitoUser.getUserAttributes((err, attributes) => {
+      if (err) return console.log(err);
+      callback(attributes)
+    })
+  })
+}

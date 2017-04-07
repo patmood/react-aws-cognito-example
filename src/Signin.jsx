@@ -11,6 +11,7 @@ class Signin extends Component {
     this.state = {
       email: '',
       password: '',
+      loading: false,
     }
   }
 
@@ -24,14 +25,17 @@ class Signin extends Component {
 
   handleSigninSubmit (e) {
     e.preventDefault()
+    this.setState({ loading: true })
     console.log('Entered:', this.state)
     authenticateUser(this.state.email, this.state.password, (err, result) => {
       if (err) {
         console.log(err)
+        this.setState({ loading: false })
         return
       }
-      debugger
       console.log(result)
+      this.setState({ loading: false })
+      window.location.reload()
     })
   }
 
@@ -56,7 +60,7 @@ class Signin extends Component {
               onChange={this.changePassword} />
           </div>
           <div>
-            <button type='submit'>Sign In</button>
+            <button type='submit' disabled={this.state.loading}>Sign In</button>
           </div>
         </form>
       </div>
