@@ -4,12 +4,11 @@ import {
   CognitoUser,
   AuthenticationDetails
 } from 'amazon-cognito-identity-js'
-import uuid from 'uuid'
 import poolData from '../cognito-pool-data'
 
 const userPool = new CognitoUserPool(poolData)
 
-export const createUser = (email, password, callback) => {
+export const createUser = (username, email, password, callback) => {
   const attributeList = [
     new CognitoUserAttribute({
       Name: 'email',
@@ -20,7 +19,6 @@ export const createUser = (email, password, callback) => {
   // Username must be unique in a pool, and cant be a valid email format
   // To log in with email, make sure it is set as an alias attribute in Cognito
   // More info: http://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html#user-pool-settings-usernames
-  const username = uuid()
 
   userPool.signUp(username, password, attributeList, null, callback)
 }
@@ -66,6 +64,7 @@ export const getCurrentUser = (callback) => {
   const cognitoUser = userPool.getCurrentUser()
   if (!cognitoUser) return false;
 
+
   cognitoUser.getSession((err, session) => {
     if (err) {
       console.log(err)
@@ -73,6 +72,7 @@ export const getCurrentUser = (callback) => {
     }
 
     console.log('Session valid?', session.isValid())
+    console.log(session)
 
     cognitoUser.getUserAttributes((err, attributes) => {
       if (err) return console.log(err);

@@ -47,8 +47,8 @@ class Signin extends Component {
           <div>
             <input
               value={this.state.email}
-              placeholder='Email'
-              type='email'
+              placeholder='Email/username'
+              type='text'
               onChange={this.changeEmail} />
           </div>
           <div>

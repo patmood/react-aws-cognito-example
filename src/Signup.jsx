@@ -5,6 +5,7 @@ class Signup extends Component {
   constructor (props) {
     super(props)
     this.changeEmail = this.changeEmail.bind(this)
+    this.changeUsername = this.changeUsername.bind(this)
     this.changePassword = this.changePassword.bind(this)
     this.changeVerifyCode = this.changeVerifyCode.bind(this)
     this.handleSignupSubmit = this.handleSignupSubmit.bind(this)
@@ -14,12 +15,17 @@ class Signup extends Component {
       email: '',
       password: '',
       verifyCode: '',
-      username: null,
+      username: '',
+      showVerification: false,
     }
   }
 
   changeEmail (e) {
     this.setState({ email: e.target.value })
+  }
+
+  changeUsername (e) {
+    this.setState({ username: e.target.value })
   }
 
   changePassword (e) {
@@ -31,15 +37,16 @@ class Signup extends Component {
   }
 
   handleSignupSubmit (e) {
+    const { username, email, password } = this.state
     e.preventDefault()
     console.log('Entered:', this.state)
-    createUser(this.state.email, this.state.password, (err, result) => {
+    createUser(username, email, password, (err, result) => {
       if (err) {
         console.log(err)
         return
       }
       console.log(result.user)
-      this.setState({ username: result.user.getUsername() })
+      this.setState({ showVerification: true })
     })
   }
 
@@ -59,7 +66,7 @@ class Signup extends Component {
       <div className="Signup">
         <h2>Sign Up</h2>
         {
-          !this.state.username ? (
+          !this.state.showVerification ? (
             <form onSubmit={this.handleSignupSubmit}>
               <div>
                 <input
@@ -67,6 +74,12 @@ class Signup extends Component {
                   placeholder='Email'
                   type='email'
                   onChange={this.changeEmail} />
+              </div>
+              <div>
+                <input
+                  value={this.state.username}
+                  placeholder='Username'
+                  onChange={this.changeUsername} />
               </div>
               <div>
                 <input
